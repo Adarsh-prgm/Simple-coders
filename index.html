@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Elevate Gym | Fitness Landing Page</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a href="#home" class="brand">Elevate Gym</a>
+        <nav class="nav-links">
+          <a href="#programs">Programs</a>
+          <a href="#about">About</a>
+          <a href="#testimonials">Testimonials</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <a href="#join" class="btn btn-secondary">Join Now</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" id="home">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">Strength • Endurance • Confidence</p>
+            <h1>Power your body. Transform your life.</h1>
+            <p class="hero-text">
+              Discover a gym built for every level, with expert coaching, modern
+              equipment, and a welcoming community that helps you reach your
+              goals faster.
+            </p>
+            <div class="hero-actions">
+              <a href="#join" class="btn btn-primary">Start Free Trial</a>
+              <a href="#programs" class="btn btn-ghost">See Programs</a>
+            </div>
+            <div class="hero-stats">
+              <div>
+                <strong>24/7</strong>
+                <span>Access</span>
+              </div>
+              <div>
+                <strong>50+</strong>
+                <span>Classes</span>
+              </div>
+              <div>
+                <strong>200+</strong>
+                <span>Members</span>
+              </div>
+            </div>
+          </div>
+          <div class="hero-image">
+            <div class="image-frame"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="programs" id="programs">
+        <div class="container section-heading">
+          <p class="eyebrow">Our Programs</p>
+          <h2>Train smarter with tailored fitness plans</h2>
+        </div>
+        <div class="container cards-grid">
+          <article class="card">
+            <h3>Personal Training</h3>
+            <p>One-on-one coaching for strength, mobility, and long-term progress.</p>
+          </article>
+          <article class="card">
+            <h3>Small Group Classes</h3>
+            <p>Motivating workouts with a supportive team and expert instructors.</p>
+          </article>
+          <article class="card">
+            <h3>Nutrition Support</h3>
+            <p>Flexible meal guidance to fuel your training and recovery.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="about" id="about">
+        <div class="container about-grid">
+          <div class="about-image"></div>
+          <div class="about-copy">
+            <p class="eyebrow">Why Elevate?</p>
+            <h2>Fitness built around your lifestyle</h2>
+            <p>
+              We combine modern equipment, proven workouts, and a community that
+              keeps you accountable. From beginners to seasoned athletes, every
+              member gets a plan that fits their goals.
+            </p>
+            <ul class="feature-list">
+              <li>Certified coaches with personal attention</li>
+              <li>Flexible membership options</li>
+              <li>Recovery zone with sauna and stretch area</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="testimonials" id="testimonials">
+        <div class="container section-heading">
+          <p class="eyebrow">Success Stories</p>
+          <h2>Real results from real members</h2>
+        </div>
+        <div class="container testimonials-grid">
+          <article class="testimonial-card">
+            <p class="testimonial-text">
+              "I finally found a gym where I feel welcome and challenged every
+              workout. My energy and confidence have never been higher."
+            </p>
+            <strong>Alex M.</strong>
+          </article>
+          <article class="testimonial-card">
+            <p class="testimonial-text">
+              "The coaches helped me build a routine that fits my busy schedule.
+              The progress has been amazing."
+            </p>
+            <strong>Jasmine T.</strong>
+          </article>
+        </div>
+      </section>
+
+      <section class="join" id="join">
+        <div class="container join-card">
+          <div>
+            <p class="eyebrow">Ready to elevate?</p>
+            <h2>Join Elevate Gym today and get your first week free.</h2>
+          </div>
+          <a href="#contact" class="btn btn-primary">Claim Your Free Week</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer" id="contact">
+      <div class="container footer-grid">
+        <div>
+          <h3>Elevate Gym</h3>
+          <p>123 Fit Street, Wellness City</p>
+          <p>hello@elevategym.com</p>
+        </div>
+        <div>
+          <p>Opening hours</p>
+          <p>Mon - Fri: 5am - 10pm</p>
+          <p>Sat - Sun: 7am - 8pm</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; <span id="year"></span> Elevate Gym. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
