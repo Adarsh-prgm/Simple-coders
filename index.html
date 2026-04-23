@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="QuickBus - Find your KSRTC bus timings quickly and easily.">
+    <title>QuickBus</title>
+    <!-- Tailwind CSS Script -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        glass: "rgba(255, 255, 255, 0.1)",
+                        glassBorder: "rgba(255, 255, 255, 0.2)"
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-900 text-white font-sans overflow-hidden">
+    
+    <!-- Three.js Background Canvas -->
+    <canvas id="bg-canvas" class="fixed top-0 left-0 w-full h-full -z-10"></canvas>
+
+    <!-- App Container -->
+    <div id="app-container" class="relative w-full h-screen overflow-y-auto overflow-x-hidden">
+        
+        <!-- Login Screen -->
+        <section id="login-screen" class="absolute inset-0 flex flex-col justify-center items-center z-50 transition-opacity duration-500">
+            <div class="glass-panel p-8 rounded-2xl w-11/12 max-w-md text-center transform transition-transform hover:scale-[1.02] duration-300">
+                <h1 class="text-4xl font-bold mb-2 bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text">QuickBus</h1>
+                <p class="text-gray-300 mb-8">Find Your Bus in Seconds</p>
+                <div class="space-y-4">
+                    <input type="text" id="name-input" placeholder="Enter your name" class="w-full bg-gray-800/50 border border-white/10 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all text-center placeholder-gray-400">
+                    <button id="continue-btn" class="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 shadow-lg">
+                        Continue
+                    </button>
+                    <div id="login-error" class="hidden text-sm text-red-400"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Welcome Animation Screen -->
+        <section id="welcome-screen" class="absolute inset-0 flex justify-center items-center z-40 opacity-0 pointer-events-none transition-opacity duration-1000 hidden">
+            <div class="text-center">
+                <h1 id="welcome-title" class="text-5xl md:text-7xl font-extrabold tracking-tight mb-4 text-white glow-text translate-y-10 opacity-0 transition-all duration-1000">QuickBus</h1>
+                <p id="welcome-subtitle" class="text-xl md:text-2xl text-blue-300 font-light translate-y-5 opacity-0 transition-all duration-1000 delay-300">Find Your Bus in Seconds</p>
+            </div>
+        </section>
+
+        <!-- Main App Screen (Hidden initially) -->
+        <section id="main-app" class="relative z-30 min-h-screen p-4 md:p-8 hidden opacity-0 transition-opacity duration-1000">
+            <div class="max-w-2xl mx-auto pt-4 pb-12">
+                
+                <!-- Header -->
+                <header class="flex justify-between items-center mb-8 glass-panel p-4 rounded-xl">
+                    <h2 class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text">QuickBus</h2>
+                    <div class="flex items-center gap-3">
+                        <span id="username" class="text-sm text-gray-300 hidden md:block"></span>
+                        <button id="logout-btn" class="text-xs bg-red-500/20 text-red-300 hover:bg-red-500/40 px-3 py-1.5 rounded-lg transition-colors">Logout</button>
+                    </div>
+                </header>
+
+                <!-- Search Panel -->
+                <div class="glass-panel p-6 rounded-2xl mb-8 slide-up">
+                    <h3 class="text-xl pl-1 font-semibold mb-6 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        Plan Your Trip
+                    </h3>
+                    
+                    <form id="search-form" class="space-y-5">
+                        <!-- Origin (Fixed to Mangalore for now based on data) -->
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-1 ml-1" for="origin">Starting From</label>
+                            <input type="text" id="origin" value="Mangalore" disabled class="w-full bg-gray-800/50 border border-gray-700 text-gray-300 rounded-xl px-4 py-3 cursor-not-allowed">
+                        </div>
+
+                        <!-- Destination -->
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-1 ml-1" for="destination">Destination</label>
+                            <div class="relative">
+                                <select id="destination" required class="w-full bg-gray-800/50 border border-white/10 text-white rounded-xl px-4 py-3 appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                                    <option value="" disabled selected>Select Destination</option>
+                                    <option value="Udupi">Udupi</option>
+                                    <option value="Bantwal">Bantwal (BC Road)</option>
+                                    <option value="Puttur">Puttur</option>
+                                    <option value="Moodbidri">Moodbidri</option>
+                                    <option value="Belthangady">Belthangady</option>
+                                    <option value="Sullia">Sullia</option>
+                                    <option value="Hassan">Hassan</option>
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
+                                    <svg class="fill-current h-4 w-4" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Time -->
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-1 ml-1" for="travel-time">Travel Time</label>
+                            <input type="time" id="travel-time" required class="w-full bg-gray-800/50 border border-white/10 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all [color-scheme:dark]">
+                        </div>
+
+                        <button type="submit" class="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium py-3.5 rounded-xl shadow-lg hover:shadow-blue-500/25 transition-all transform hover:-translate-y-0.5 relative overflow-hidden group">
+                            <span class="relative z-10 flex items-center justify-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                                Find Next Bus
+                            </span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Results Area -->
+                <div id="results-area" class="space-y-4 hidden">
+                    <!-- Results will be injected here via JS -->
+                </div>
+
+                <!-- Full Schedule Modal (Hidden) -->
+                <div id="schedule-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+                    <div class="glass-panel w-full max-w-md rounded-2xl overflow-hidden transform scale-95 transition-transform duration-300" id="schedule-modal-content">
+                        <div class="flex justify-between items-center p-4 border-b border-white/10 bg-white/5">
+                            <h3 class="font-bold text-lg" id="modal-title">Schedule</h3>
+                            <button id="close-modal" class="text-gray-400 hover:text-white p-1 rounded-full hover:bg-white/10 transition-colors">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                            </button>
+                        </div>
+                        <div class="p-4 max-h-[60vh] overflow-y-auto no-scrollbar">
+                            <ul id="schedule-list" class="space-y-2">
+                                <!-- Schedule items injected here -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="three-bg.js"></script>
+    <script src="bus-data.js"></script>
+    <script type="module" src="app.js"></script>
+</body>
+</html>
